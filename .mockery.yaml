@@ -1,0 +1,14 @@
+recursive: true
+filename: "mock_{{ .InterfaceName | snakecase }}.go"
+outpkg: "mock{{ .PackageName }}"
+
+packages:
+  github.com/gatsu420/marianne/app/repository:
+    config:
+      include-regex: PGRepo
+      dir: "./mocks/app/repository"
+
+  github.com/gatsu420/marianne/app/usecases/food:
+    config:
+      include-regex: Usecase
+      dir: "./mocks/app/usecases/food"
