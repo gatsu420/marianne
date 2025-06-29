@@ -1,32 +1,32 @@
 package food
 
 import (
-	stderr "errors"
+	"errors"
 
-	"github.com/gatsu420/marianne/common/errors"
+	commonerr "github.com/gatsu420/marianne/common/errors"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type GetFoodRow struct {
-	ID           int
-	Name         string
-	Type         pgtype.Text
-	IntakeStatus pgtype.Text
-	Feeder       pgtype.Text
-	Location     pgtype.Text
-	Remarks      pgtype.Text
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
+	ID           int                `json:"id"`
+	Name         string             `json:"name"`
+	Type         pgtype.Text        `json:"type"`
+	IntakeStatus pgtype.Text        `json:"intakeStatus"`
+	Feeder       pgtype.Text        `json:"feeder"`
+	Location     pgtype.Text        `json:"location"`
+	Remarks      pgtype.Text        `json:"remarks"`
+	CreatedAt    pgtype.Timestamptz `json:"createdAt"`
+	UpdatedAt    pgtype.Timestamptz `json:"updatedAt"`
 }
 
 func (u *usecaseImpl) GetFood(id int) (*GetFoodRow, error) {
 	food, err := u.pgRepo.GetFood(id)
 	if err != nil {
-		if stderr.Is(err, pgx.ErrNoRows) {
-			return nil, errors.New(errors.ErrMsgFoodNotFound, errors.ErrFoodNotFound)
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, commonerr.New(commonerr.ErrMsgFoodNotFound, commonerr.ErrFoodNotFound)
 		}
-		return nil, errors.New(errors.ErrMsgInternal, errors.ErrInternal)
+		return nil, commonerr.New(commonerr.ErrMsgInternal, commonerr.ErrInternal)
 	}
 
 	return &GetFoodRow{
