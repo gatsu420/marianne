@@ -9,15 +9,15 @@ import (
 )
 
 type GetFoodRow struct {
-	ID           int
-	Name         string
-	Type         pgtype.Text
-	IntakeStatus pgtype.Text
-	Feeder       pgtype.Text
-	Location     pgtype.Text
-	Remarks      pgtype.Text
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
+	ID           int                `json:"id"`
+	Name         string             `json:"name"`
+	Type         pgtype.Text        `json:"type"`
+	IntakeStatus pgtype.Text        `json:"intakeStatus"`
+	Feeder       pgtype.Text        `json:"feeder"`
+	Location     pgtype.Text        `json:"location"`
+	Remarks      pgtype.Text        `json:"remarks"`
+	CreatedAt    pgtype.Timestamptz `json:"createdAt"`
+	UpdatedAt    pgtype.Timestamptz `json:"updatedAt"`
 }
 
 func (u *usecaseImpl) GetFood(id int) (*GetFoodRow, error) {
