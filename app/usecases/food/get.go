@@ -1,9 +1,9 @@
 package food
 
 import (
-	stderr "errors"
+	"errors"
 
-	"github.com/gatsu420/marianne/common/errors"
+	commonerr "github.com/gatsu420/marianne/common/errors"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -23,10 +23,10 @@ type GetFoodRow struct {
 func (u *usecaseImpl) GetFood(id int) (*GetFoodRow, error) {
 	food, err := u.pgRepo.GetFood(id)
 	if err != nil {
-		if stderr.Is(err, pgx.ErrNoRows) {
-			return nil, errors.New(errors.ErrMsgFoodNotFound, errors.ErrFoodNotFound)
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, commonerr.New(commonerr.ErrMsgFoodNotFound, commonerr.ErrFoodNotFound)
 		}
-		return nil, errors.New(errors.ErrMsgInternal, errors.ErrInternal)
+		return nil, commonerr.New(commonerr.ErrMsgInternal, commonerr.ErrInternal)
 	}
 
 	return &GetFoodRow{

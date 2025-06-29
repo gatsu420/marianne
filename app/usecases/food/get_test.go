@@ -1,11 +1,11 @@
 package food_test
 
 import (
-	stderr "errors"
+	"errors"
 
 	"github.com/gatsu420/marianne/app/repository"
 	"github.com/gatsu420/marianne/app/usecases/food"
-	"github.com/gatsu420/marianne/common/errors"
+	commonerr "github.com/gatsu420/marianne/common/errors"
 	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/mock"
 )
@@ -23,9 +23,9 @@ func (s *testSuite) Test_GetFood() {
 			testName:    "repo error",
 			id:          99,
 			repoFood:    repository.GetFoodRow{},
-			repoErr:     stderr.New("some repo error"),
+			repoErr:     errors.New("some repo error"),
 			expectedRow: nil,
-			expectedErr: errors.New(errors.ErrMsgInternal, errors.ErrInternal),
+			expectedErr: commonerr.New(commonerr.ErrMsgInternal, commonerr.ErrInternal),
 		},
 		{
 			testName:    "ID is not found",
@@ -33,7 +33,7 @@ func (s *testSuite) Test_GetFood() {
 			repoFood:    repository.GetFoodRow{},
 			repoErr:     pgx.ErrNoRows,
 			expectedRow: nil,
-			expectedErr: errors.New(errors.ErrMsgFoodNotFound, errors.ErrFoodNotFound),
+			expectedErr: commonerr.New(commonerr.ErrMsgFoodNotFound, commonerr.ErrFoodNotFound),
 		},
 		{
 			testName: "success",
