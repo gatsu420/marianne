@@ -3,6 +3,8 @@
 package mockrepository
 
 import (
+	context "context"
+
 	repository "github.com/gatsu420/marianne/app/repository"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -72,6 +74,65 @@ func (_c *MockPGRepo_GetFood_Call) Return(_a0 repository.GetFoodRow, _a1 error) 
 }
 
 func (_c *MockPGRepo_GetFood_Call) RunAndReturn(run func(int) (repository.GetFoodRow, error)) *MockPGRepo_GetFood_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ListFood provides a mock function with given fields: ctx, args
+func (_m *MockPGRepo) ListFood(ctx context.Context, args repository.ListFoodArgs) ([]repository.ListFoodRow, error) {
+	ret := _m.Called(ctx, args)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListFood")
+	}
+
+	var r0 []repository.ListFoodRow
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, repository.ListFoodArgs) ([]repository.ListFoodRow, error)); ok {
+		return rf(ctx, args)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, repository.ListFoodArgs) []repository.ListFoodRow); ok {
+		r0 = rf(ctx, args)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]repository.ListFoodRow)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, repository.ListFoodArgs) error); ok {
+		r1 = rf(ctx, args)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockPGRepo_ListFood_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListFood'
+type MockPGRepo_ListFood_Call struct {
+	*mock.Call
+}
+
+// ListFood is a helper method to define mock.On call
+//   - ctx context.Context
+//   - args repository.ListFoodArgs
+func (_e *MockPGRepo_Expecter) ListFood(ctx interface{}, args interface{}) *MockPGRepo_ListFood_Call {
+	return &MockPGRepo_ListFood_Call{Call: _e.mock.On("ListFood", ctx, args)}
+}
+
+func (_c *MockPGRepo_ListFood_Call) Run(run func(ctx context.Context, args repository.ListFoodArgs)) *MockPGRepo_ListFood_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(repository.ListFoodArgs))
+	})
+	return _c
+}
+
+func (_c *MockPGRepo_ListFood_Call) Return(_a0 []repository.ListFoodRow, _a1 error) *MockPGRepo_ListFood_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockPGRepo_ListFood_Call) RunAndReturn(run func(context.Context, repository.ListFoodArgs) ([]repository.ListFoodRow, error)) *MockPGRepo_ListFood_Call {
 	_c.Call.Return(run)
 	return _c
 }

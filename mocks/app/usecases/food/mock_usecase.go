@@ -3,6 +3,8 @@
 package mockfood
 
 import (
+	context "context"
+
 	food "github.com/gatsu420/marianne/app/usecases/food"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -74,6 +76,65 @@ func (_c *MockUsecase_GetFood_Call) Return(_a0 *food.GetFoodRow, _a1 error) *Moc
 }
 
 func (_c *MockUsecase_GetFood_Call) RunAndReturn(run func(int) (*food.GetFoodRow, error)) *MockUsecase_GetFood_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ListFood provides a mock function with given fields: ctx, args
+func (_m *MockUsecase) ListFood(ctx context.Context, args *food.ListFoodArgs) ([]food.ListFoodRow, error) {
+	ret := _m.Called(ctx, args)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListFood")
+	}
+
+	var r0 []food.ListFoodRow
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *food.ListFoodArgs) ([]food.ListFoodRow, error)); ok {
+		return rf(ctx, args)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *food.ListFoodArgs) []food.ListFoodRow); ok {
+		r0 = rf(ctx, args)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]food.ListFoodRow)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *food.ListFoodArgs) error); ok {
+		r1 = rf(ctx, args)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockUsecase_ListFood_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListFood'
+type MockUsecase_ListFood_Call struct {
+	*mock.Call
+}
+
+// ListFood is a helper method to define mock.On call
+//   - ctx context.Context
+//   - args *food.ListFoodArgs
+func (_e *MockUsecase_Expecter) ListFood(ctx interface{}, args interface{}) *MockUsecase_ListFood_Call {
+	return &MockUsecase_ListFood_Call{Call: _e.mock.On("ListFood", ctx, args)}
+}
+
+func (_c *MockUsecase_ListFood_Call) Run(run func(ctx context.Context, args *food.ListFoodArgs)) *MockUsecase_ListFood_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*food.ListFoodArgs))
+	})
+	return _c
+}
+
+func (_c *MockUsecase_ListFood_Call) Return(_a0 []food.ListFoodRow, _a1 error) *MockUsecase_ListFood_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockUsecase_ListFood_Call) RunAndReturn(run func(context.Context, *food.ListFoodArgs) ([]food.ListFoodRow, error)) *MockUsecase_ListFood_Call {
 	_c.Call.Return(run)
 	return _c
 }
