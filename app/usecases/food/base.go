@@ -1,9 +1,14 @@
 package food
 
-import "github.com/gatsu420/marianne/app/repository"
+import (
+	"context"
+
+	"github.com/gatsu420/marianne/app/repository"
+)
 
 type Usecase interface {
 	GetFood(id int) (*GetFoodRow, error)
+	ListFood(ctx context.Context, args *ListFoodArgs) ([]ListFoodRow, error)
 }
 
 type usecaseImpl struct {
