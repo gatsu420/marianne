@@ -1,9 +1,14 @@
 package repository
 
-import "github.com/jackc/pgx/v5/pgxpool"
+import (
+	"context"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+)
 
 type PGRepo interface {
 	GetFood(id int) (GetFoodRow, error)
+	ListFood(ctx context.Context, args ListFoodArgs) ([]ListFoodRow, error)
 }
 
 type pgRepoImpl struct {
