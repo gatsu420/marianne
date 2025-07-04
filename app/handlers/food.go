@@ -24,7 +24,7 @@ func (h *handlerImpl) GetFood(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	food, err := h.foodUsecases.GetFood(id)
+	food, err := h.foodUsecases.GetFood(r.Context(), id)
 	if err != nil {
 		if ferr, ok := err.(*errors.Err); ok && ferr.Code == errors.ErrFoodNotFound {
 			http.Error(w, ferr.Error(), http.StatusNotFound)
