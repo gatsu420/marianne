@@ -7,7 +7,7 @@ import (
 )
 
 type Usecase interface {
-	GetFood(id int) (*GetFoodRow, error)
+	GetFood(ctx context.Context, id int) (*GetFoodRow, error)
 	ListFood(ctx context.Context, args *ListFoodArgs) ([]ListFoodRow, error)
 }
 
