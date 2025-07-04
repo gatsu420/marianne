@@ -18,7 +18,7 @@ type GetFoodRow struct {
 	UpdatedAt    pgtype.Timestamptz
 }
 
-func (p *pgRepoImpl) GetFood(id int) (GetFoodRow, error) {
+func (p *pgRepoImpl) GetFood(ctx context.Context, id int) (GetFoodRow, error) {
 	query := `
 select
     f.id,
@@ -38,7 +38,7 @@ left join food_locations fl on f.location_id = fl.id
 where f.id = $1
 and f.removed_at is null
 	`
-	rows := p.pgxPool.QueryRow(context.Background(), query, id)
+	rows := p.pgxPool.QueryRow(ctx, query, id)
 	result := GetFoodRow{}
 	err := rows.Scan(
 		&result.ID,
