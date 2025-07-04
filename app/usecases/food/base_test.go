@@ -1,6 +1,7 @@
 package food_test
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -14,6 +15,7 @@ type testSuite struct {
 	suite.Suite
 	mockPGRepo *mockrepository.MockPGRepo
 	usecase    food.Usecase
+	ctx        context.Context
 
 	dummyPGText        pgtype.Text
 	dummyPGTimestamptz pgtype.Timestamptz
@@ -33,6 +35,7 @@ func (s *testSuite) SetupSuite() {
 func (s *testSuite) SetupTest() {
 	s.mockPGRepo = mockrepository.NewMockPGRepo(s.T())
 	s.usecase = food.NewUsecase(s.mockPGRepo)
+	s.ctx = context.Background()
 }
 
 func Test(t *testing.T) {

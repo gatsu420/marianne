@@ -68,11 +68,12 @@ func (s *testSuite) Test_GetFood() {
 	for _, tc := range testCases {
 		s.Run(tc.testName, func() {
 			s.mockPGRepo.EXPECT().GetFood(
+				mock.Anything,
 				mock.AnythingOfType("int"),
 			).Return(tc.repoFood, tc.repoErr).Once()
 		})
 
-		row, err := s.usecase.GetFood(tc.id)
+		row, err := s.usecase.GetFood(s.ctx, tc.id)
 		s.Equal(tc.expectedRow, row)
 		s.Equal(tc.expectedErr, err)
 	}
