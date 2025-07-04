@@ -1,6 +1,7 @@
 package food
 
 import (
+	"context"
 	"errors"
 
 	commonerr "github.com/gatsu420/marianne/common/errors"
@@ -20,8 +21,8 @@ type GetFoodRow struct {
 	UpdatedAt    pgtype.Timestamptz `json:"updatedAt"`
 }
 
-func (u *usecaseImpl) GetFood(id int) (*GetFoodRow, error) {
-	food, err := u.pgRepo.GetFood(id)
+func (u *usecaseImpl) GetFood(ctx context.Context, id int) (*GetFoodRow, error) {
+	food, err := u.pgRepo.GetFood(ctx, id)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, commonerr.New(commonerr.ErrMsgFoodNotFound, commonerr.ErrFoodNotFound)
