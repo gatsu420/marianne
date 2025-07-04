@@ -85,6 +85,7 @@ func (s *testSuite) Test_GetFood() {
 		s.Run(tc.testName, func() {
 			if tc.urlQueryErr == nil {
 				s.mockFoodUsecase.EXPECT().GetFood(
+					mock.Anything,
 					mock.AnythingOfType("int"),
 				).Return(tc.usecaseFood, tc.usecaseErr).Once()
 				s.handler = handlers.NewHandler(s.mockFoodUsecase)
