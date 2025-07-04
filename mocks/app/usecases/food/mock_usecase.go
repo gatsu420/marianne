@@ -22,9 +22,9 @@ func (_m *MockUsecase) EXPECT() *MockUsecase_Expecter {
 	return &MockUsecase_Expecter{mock: &_m.Mock}
 }
 
-// GetFood provides a mock function with given fields: id
-func (_m *MockUsecase) GetFood(id int) (*food.GetFoodRow, error) {
-	ret := _m.Called(id)
+// GetFood provides a mock function with given fields: ctx, id
+func (_m *MockUsecase) GetFood(ctx context.Context, id int) (*food.GetFoodRow, error) {
+	ret := _m.Called(ctx, id)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetFood")
@@ -32,19 +32,19 @@ func (_m *MockUsecase) GetFood(id int) (*food.GetFoodRow, error) {
 
 	var r0 *food.GetFoodRow
 	var r1 error
-	if rf, ok := ret.Get(0).(func(int) (*food.GetFoodRow, error)); ok {
-		return rf(id)
+	if rf, ok := ret.Get(0).(func(context.Context, int) (*food.GetFoodRow, error)); ok {
+		return rf(ctx, id)
 	}
-	if rf, ok := ret.Get(0).(func(int) *food.GetFoodRow); ok {
-		r0 = rf(id)
+	if rf, ok := ret.Get(0).(func(context.Context, int) *food.GetFoodRow); ok {
+		r0 = rf(ctx, id)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*food.GetFoodRow)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(int) error); ok {
-		r1 = rf(id)
+	if rf, ok := ret.Get(1).(func(context.Context, int) error); ok {
+		r1 = rf(ctx, id)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -58,14 +58,15 @@ type MockUsecase_GetFood_Call struct {
 }
 
 // GetFood is a helper method to define mock.On call
+//   - ctx context.Context
 //   - id int
-func (_e *MockUsecase_Expecter) GetFood(id interface{}) *MockUsecase_GetFood_Call {
-	return &MockUsecase_GetFood_Call{Call: _e.mock.On("GetFood", id)}
+func (_e *MockUsecase_Expecter) GetFood(ctx interface{}, id interface{}) *MockUsecase_GetFood_Call {
+	return &MockUsecase_GetFood_Call{Call: _e.mock.On("GetFood", ctx, id)}
 }
 
-func (_c *MockUsecase_GetFood_Call) Run(run func(id int)) *MockUsecase_GetFood_Call {
+func (_c *MockUsecase_GetFood_Call) Run(run func(ctx context.Context, id int)) *MockUsecase_GetFood_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(int))
+		run(args[0].(context.Context), args[1].(int))
 	})
 	return _c
 }
@@ -75,7 +76,7 @@ func (_c *MockUsecase_GetFood_Call) Return(_a0 *food.GetFoodRow, _a1 error) *Moc
 	return _c
 }
 
-func (_c *MockUsecase_GetFood_Call) RunAndReturn(run func(int) (*food.GetFoodRow, error)) *MockUsecase_GetFood_Call {
+func (_c *MockUsecase_GetFood_Call) RunAndReturn(run func(context.Context, int) (*food.GetFoodRow, error)) *MockUsecase_GetFood_Call {
 	_c.Call.Return(run)
 	return _c
 }

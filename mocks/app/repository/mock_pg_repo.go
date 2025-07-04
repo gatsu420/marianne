@@ -22,9 +22,9 @@ func (_m *MockPGRepo) EXPECT() *MockPGRepo_Expecter {
 	return &MockPGRepo_Expecter{mock: &_m.Mock}
 }
 
-// GetFood provides a mock function with given fields: id
-func (_m *MockPGRepo) GetFood(id int) (repository.GetFoodRow, error) {
-	ret := _m.Called(id)
+// GetFood provides a mock function with given fields: ctx, id
+func (_m *MockPGRepo) GetFood(ctx context.Context, id int) (repository.GetFoodRow, error) {
+	ret := _m.Called(ctx, id)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetFood")
@@ -32,17 +32,17 @@ func (_m *MockPGRepo) GetFood(id int) (repository.GetFoodRow, error) {
 
 	var r0 repository.GetFoodRow
 	var r1 error
-	if rf, ok := ret.Get(0).(func(int) (repository.GetFoodRow, error)); ok {
-		return rf(id)
+	if rf, ok := ret.Get(0).(func(context.Context, int) (repository.GetFoodRow, error)); ok {
+		return rf(ctx, id)
 	}
-	if rf, ok := ret.Get(0).(func(int) repository.GetFoodRow); ok {
-		r0 = rf(id)
+	if rf, ok := ret.Get(0).(func(context.Context, int) repository.GetFoodRow); ok {
+		r0 = rf(ctx, id)
 	} else {
 		r0 = ret.Get(0).(repository.GetFoodRow)
 	}
 
-	if rf, ok := ret.Get(1).(func(int) error); ok {
-		r1 = rf(id)
+	if rf, ok := ret.Get(1).(func(context.Context, int) error); ok {
+		r1 = rf(ctx, id)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -56,14 +56,15 @@ type MockPGRepo_GetFood_Call struct {
 }
 
 // GetFood is a helper method to define mock.On call
+//   - ctx context.Context
 //   - id int
-func (_e *MockPGRepo_Expecter) GetFood(id interface{}) *MockPGRepo_GetFood_Call {
-	return &MockPGRepo_GetFood_Call{Call: _e.mock.On("GetFood", id)}
+func (_e *MockPGRepo_Expecter) GetFood(ctx interface{}, id interface{}) *MockPGRepo_GetFood_Call {
+	return &MockPGRepo_GetFood_Call{Call: _e.mock.On("GetFood", ctx, id)}
 }
 
-func (_c *MockPGRepo_GetFood_Call) Run(run func(id int)) *MockPGRepo_GetFood_Call {
+func (_c *MockPGRepo_GetFood_Call) Run(run func(ctx context.Context, id int)) *MockPGRepo_GetFood_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(int))
+		run(args[0].(context.Context), args[1].(int))
 	})
 	return _c
 }
@@ -73,7 +74,7 @@ func (_c *MockPGRepo_GetFood_Call) Return(_a0 repository.GetFoodRow, _a1 error) 
 	return _c
 }
 
-func (_c *MockPGRepo_GetFood_Call) RunAndReturn(run func(int) (repository.GetFoodRow, error)) *MockPGRepo_GetFood_Call {
+func (_c *MockPGRepo_GetFood_Call) RunAndReturn(run func(context.Context, int) (repository.GetFoodRow, error)) *MockPGRepo_GetFood_Call {
 	_c.Call.Return(run)
 	return _c
 }
