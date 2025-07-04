@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -57,7 +56,7 @@ func (h *handlerImpl) ListFood(w http.ResponseWriter, r *http.Request) {
 	loc, _ := time.LoadLocation("Asia/Jakarta")
 	llst, llet := st.In(loc), et.In(loc)
 
-	food, err := h.foodUsecases.ListFood(context.Background(), &food.ListFoodArgs{
+	food, err := h.foodUsecases.ListFood(r.Context(), &food.ListFoodArgs{
 		StartTimestamp: llst,
 		EndTimestamp:   llet,
 		Type:           r.URL.Query().Get("type"),
