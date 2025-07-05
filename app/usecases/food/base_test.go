@@ -18,6 +18,7 @@ type testSuite struct {
 	ctx        context.Context
 
 	dummyPGText        pgtype.Text
+	dummyTimestamp     time.Time
 	dummyPGTimestamptz pgtype.Timestamptz
 }
 
@@ -26,8 +27,9 @@ func (s *testSuite) SetupSuite() {
 		String: "dummy",
 		Valid:  true,
 	}
+	s.dummyTimestamp = time.Date(2025, time.July, 4, 20, 47, 0, 0, time.UTC)
 	s.dummyPGTimestamptz = pgtype.Timestamptz{
-		Time:  time.Now(),
+		Time:  s.dummyTimestamp,
 		Valid: true,
 	}
 }
