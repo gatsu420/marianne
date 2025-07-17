@@ -10,13 +10,19 @@ import (
 	"time"
 
 	"github.com/gatsu420/marianne/app/handlers"
+	"github.com/gatsu420/marianne/app/middlewares"
 	"github.com/gatsu420/marianne/app/repository"
 	"github.com/gatsu420/marianne/app/usecases/food"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 func main() {
-	pgPool, err := pgxpool.New(context.Background(), "postgres://mary:mary@localhost:5432/marydb?sslmode=disable")
+	pgConfig, err := pgxpool.ParseConfig("postgres://mary:mary@localhost:5432/marydb?sslmode=disable")
+	if err != nil {
+		log.Fatal(err)
+	}
+	pgConfig.ConnConfig.Tracer = repository.QueryLogImpl{}
+	pgPool, err := pgxpool.NewWithConfig(context.Background(), pgConfig)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,12 +32,17 @@ func main() {
 	handlers := handlers.NewHandler(foodUsecases)
 
 	mux := http.NewServeMux()
+	stackedMux := middlewares.Stack(mux,
+		middlewares.Hello,
+		middlewares.Ngetes,
+	)
+
 	mux.HandleFunc("GET /v1/food", handlers.GetFood)
 	mux.HandleFunc("GET /v1/foodlist", handlers.ListFood)
 
 	server := http.Server{
 		Addr:    ":8080",
-		Handler: mux,
+		Handler: stackedMux,
 	}
 
 	intrCh := make(chan os.Signal, 1)
