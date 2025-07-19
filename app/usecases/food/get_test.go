@@ -4,14 +4,12 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"time"
 
 	"github.com/gatsu420/marianne/app/usecases/food"
 	commonerr "github.com/gatsu420/marianne/common/errors"
-	"github.com/gatsu420/marianne/common/testassert"
+	"github.com/gatsu420/marianne/common/tests"
 	mockrepository "github.com/gatsu420/marianne/mocks/app/repository"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func Test_GetFood(t *testing.T) {
@@ -20,7 +18,7 @@ func Test_GetFood(t *testing.T) {
 		id          int
 		repoErr     error
 		expectedRow *food.GetFoodRow
-		expectedErr *commonerr.Err
+		expectedErr error
 	}{
 		{
 			testName:    "repo error",
@@ -43,14 +41,15 @@ func Test_GetFood(t *testing.T) {
 			expectedRow: &food.GetFoodRow{
 				ID:           99,
 				Name:         "mock",
-				Type:         pgtype.Text{String: "mock", Valid: true},
-				IntakeStatus: pgtype.Text{String: "mock", Valid: true},
-				Feeder:       pgtype.Text{String: "mock", Valid: true},
-				Location:     pgtype.Text{String: "mock", Valid: true},
-				Remarks:      pgtype.Text{String: "mock", Valid: true},
-				CreatedAt:    pgtype.Timestamptz{Time: time.Date(2025, time.July, 4, 20, 47, 0, 0, time.UTC), Valid: true},
-				UpdatedAt:    pgtype.Timestamptz{Time: time.Date(2025, time.July, 4, 20, 47, 0, 0, time.UTC), Valid: true},
+				Type:         tests.MockPGText(),
+				IntakeStatus: tests.MockPGText(),
+				Feeder:       tests.MockPGText(),
+				Location:     tests.MockPGText(),
+				Remarks:      tests.MockPGText(),
+				CreatedAt:    tests.MockPGTimestamptz(),
+				UpdatedAt:    tests.MockPGTimestamptz(),
 			},
+			expectedErr: nil,
 		},
 	}
 
@@ -60,16 +59,10 @@ func Test_GetFood(t *testing.T) {
 				mockrepository.WithExpectedErr(tc.repoErr),
 			)
 			usecase := food.NewUsecase(mockPGRepo)
-			ctx := context.Background()
 
-			row, err := usecase.GetFood(ctx, tc.id)
-			cerr, ok := err.(*commonerr.Err)
-			if err != nil && !ok {
-				t.Error("unable to cast err as *commonerr.Err")
-			}
-
-			testassert.Equal(t, row, tc.expectedRow)
-			testassert.Equal(t, cerr, tc.expectedErr)
+			row, err := usecase.GetFood(context.Background(), tc.id)
+			tests.AssertEqual(t, row, tc.expectedRow)
+			tests.AssertEqual(t, err, tc.expectedErr)
 		})
 	}
 }

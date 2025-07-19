@@ -2,10 +2,9 @@ package mockrepository
 
 import (
 	"context"
-	"time"
 
 	"github.com/gatsu420/marianne/app/repository"
-	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/gatsu420/marianne/common/tests"
 )
 
 type mockPGRepo struct {
@@ -33,12 +32,31 @@ func (m *mockPGRepo) GetFood(ctx context.Context, id int) (repository.GetFoodRow
 	return repository.GetFoodRow{
 		ID:           99,
 		Name:         "mock",
-		Type:         pgtype.Text{String: "mock", Valid: true},
-		IntakeStatus: pgtype.Text{String: "mock", Valid: true},
-		Feeder:       pgtype.Text{String: "mock", Valid: true},
-		Location:     pgtype.Text{String: "mock", Valid: true},
-		Remarks:      pgtype.Text{String: "mock", Valid: true},
-		CreatedAt:    pgtype.Timestamptz{Time: time.Date(2025, time.July, 4, 20, 47, 0, 0, time.UTC), Valid: true},
-		UpdatedAt:    pgtype.Timestamptz{Time: time.Date(2025, time.July, 4, 20, 47, 0, 0, time.UTC), Valid: true},
+		Type:         tests.MockPGText(),
+		IntakeStatus: tests.MockPGText(),
+		Feeder:       tests.MockPGText(),
+		Location:     tests.MockPGText(),
+		Remarks:      tests.MockPGText(),
+		CreatedAt:    tests.MockPGTimestamptz(),
+		UpdatedAt:    tests.MockPGTimestamptz(),
+	}, nil
+}
+
+func (m *mockPGRepo) ListFood(ctx context.Context, args repository.ListFoodArgs) ([]repository.ListFoodRow, error) {
+	if m.expectedErr != nil {
+		return []repository.ListFoodRow{}, m.expectedErr
+	}
+	return []repository.ListFoodRow{
+		{
+			ID:           99,
+			Name:         "mock",
+			Type:         tests.MockPGText(),
+			IntakeStatus: tests.MockPGText(),
+			Feeder:       tests.MockPGText(),
+			Location:     tests.MockPGText(),
+			Remarks:      tests.MockPGText(),
+			CreatedAt:    tests.MockPGTimestamptz(),
+			UpdatedAt:    tests.MockPGTimestamptz(),
+		},
 	}, nil
 }
