@@ -1,20 +1,21 @@
 package food_test
 
 import (
+	"context"
 	"errors"
+	"testing"
 
-	"github.com/gatsu420/marianne/app/repository"
 	"github.com/gatsu420/marianne/app/usecases/food"
 	commonerr "github.com/gatsu420/marianne/common/errors"
+	"github.com/gatsu420/marianne/common/tests"
+	mockrepository "github.com/gatsu420/marianne/mocks/app/repository"
 	"github.com/jackc/pgx/v5"
-	"github.com/stretchr/testify/mock"
 )
 
-func (s *testSuite) Test_GetFood() {
+func Test_GetFood(t *testing.T) {
 	testCases := []struct {
 		testName    string
 		id          int
-		repoFood    repository.GetFoodRow
 		repoErr     error
 		expectedRow *food.GetFoodRow
 		expectedErr error
@@ -22,15 +23,13 @@ func (s *testSuite) Test_GetFood() {
 		{
 			testName:    "repo error",
 			id:          99,
-			repoFood:    repository.GetFoodRow{},
 			repoErr:     errors.New("some repo error"),
 			expectedRow: nil,
 			expectedErr: commonerr.New(commonerr.ErrMsgInternal, commonerr.ErrInternal),
 		},
 		{
-			testName:    "ID is not found",
+			testName:    "food is not found",
 			id:          99,
-			repoFood:    repository.GetFoodRow{},
 			repoErr:     pgx.ErrNoRows,
 			expectedRow: nil,
 			expectedErr: commonerr.New(commonerr.ErrMsgFoodNotFound, commonerr.ErrFoodNotFound),
@@ -38,43 +37,32 @@ func (s *testSuite) Test_GetFood() {
 		{
 			testName: "success",
 			id:       99,
-			repoFood: repository.GetFoodRow{
-				ID:           99,
-				Name:         "test",
-				Type:         s.dummyPGText,
-				IntakeStatus: s.dummyPGText,
-				Feeder:       s.dummyPGText,
-				Location:     s.dummyPGText,
-				Remarks:      s.dummyPGText,
-				CreatedAt:    s.dummyPGTimestamptz,
-				UpdatedAt:    s.dummyPGTimestamptz,
-			},
-			repoErr: nil,
+			repoErr:  nil,
 			expectedRow: &food.GetFoodRow{
 				ID:           99,
-				Name:         "test",
-				Type:         s.dummyPGText,
-				IntakeStatus: s.dummyPGText,
-				Feeder:       s.dummyPGText,
-				Location:     s.dummyPGText,
-				Remarks:      s.dummyPGText,
-				CreatedAt:    s.dummyPGTimestamptz,
-				UpdatedAt:    s.dummyPGTimestamptz,
+				Name:         "mock",
+				Type:         tests.MockPGText(),
+				IntakeStatus: tests.MockPGText(),
+				Feeder:       tests.MockPGText(),
+				Location:     tests.MockPGText(),
+				Remarks:      tests.MockPGText(),
+				CreatedAt:    tests.MockPGTimestamptz(),
+				UpdatedAt:    tests.MockPGTimestamptz(),
 			},
 			expectedErr: nil,
 		},
 	}
 
 	for _, tc := range testCases {
-		s.Run(tc.testName, func() {
-			s.mockPGRepo.EXPECT().GetFood(
-				mock.Anything,
-				mock.AnythingOfType("int"),
-			).Return(tc.repoFood, tc.repoErr).Once()
-		})
+		t.Run(tc.testName, func(t *testing.T) {
+			mockPGRepo := mockrepository.NewMockPGRepo(
+				mockrepository.WithExpectedErr(tc.repoErr),
+			)
+			usecase := food.NewUsecase(mockPGRepo)
 
-		row, err := s.usecase.GetFood(s.ctx, tc.id)
-		s.Equal(tc.expectedRow, row)
-		s.Equal(tc.expectedErr, err)
+			row, err := usecase.GetFood(context.Background(), tc.id)
+			tests.AssertEqual(t, row, tc.expectedRow)
+			tests.AssertEqual(t, err, tc.expectedErr)
+		})
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gatsu420/marianne/app/repository"
+	commonerr "github.com/gatsu420/marianne/common/errors"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -57,7 +58,7 @@ func (u *usecaseImpl) ListFood(ctx context.Context, args *ListFoodArgs) ([]ListF
 		},
 	})
 	if err != nil {
-		return nil, err
+		return nil, commonerr.New(commonerr.ErrMsgInternal, commonerr.ErrInternal)
 	}
 
 	var rows []ListFoodRow
