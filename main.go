@@ -13,9 +13,18 @@ import (
 	"github.com/gatsu420/marianne/app/repository"
 	"github.com/gatsu420/marianne/app/usecases/food"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 func main() {
+	_, err := setupOtelSDK(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+	// defer func() {
+	// 	shutdown
+	// }()
+
 	pgPool, err := pgxpool.New(context.Background(), "postgres://mary:mary@localhost:5432/marydb?sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
@@ -26,8 +35,8 @@ func main() {
 	handlers := handlers.NewHandler(foodUsecases)
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /v1/food", handlers.GetFood)
-	mux.HandleFunc("GET /v1/foodlist", handlers.ListFood)
+	mux.Handle("GET /v1/food", otelhttp.NewHandler(http.HandlerFunc(handlers.GetFood), "GetFood"))
+	// mux.HandleFunc("GET /v1/foodlist", handlers.ListFood)
 
 	server := http.Server{
 		Addr:    ":8080",
