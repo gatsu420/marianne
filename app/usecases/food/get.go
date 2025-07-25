@@ -3,22 +3,22 @@ package food
 import (
 	"context"
 	"errors"
+	"time"
 
 	commonerr "github.com/gatsu420/marianne/common/errors"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type GetFoodRow struct {
-	ID           int                `json:"id"`
-	Name         string             `json:"name"`
-	Type         pgtype.Text        `json:"type"`
-	IntakeStatus pgtype.Text        `json:"intakeStatus"`
-	Feeder       pgtype.Text        `json:"feeder"`
-	Location     pgtype.Text        `json:"location"`
-	Remarks      pgtype.Text        `json:"remarks"`
-	CreatedAt    pgtype.Timestamptz `json:"createdAt"`
-	UpdatedAt    pgtype.Timestamptz `json:"updatedAt"`
+	ID           int       `json:"id"`
+	Name         string    `json:"name"`
+	Type         string    `json:"type"`
+	IntakeStatus string    `json:"intakeStatus"`
+	Feeder       string    `json:"feeder"`
+	Location     string    `json:"location"`
+	Remarks      string    `json:"remarks"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
 }
 
 func (u *usecaseImpl) GetFood(ctx context.Context, id int) (*GetFoodRow, error) {
@@ -33,12 +33,12 @@ func (u *usecaseImpl) GetFood(ctx context.Context, id int) (*GetFoodRow, error) 
 	return &GetFoodRow{
 		ID:           food.ID,
 		Name:         food.Name,
-		Type:         food.Type,
-		IntakeStatus: food.IntakeStatus,
-		Feeder:       food.Feeder,
-		Location:     food.Location,
-		Remarks:      food.Remarks,
-		CreatedAt:    food.CreatedAt,
-		UpdatedAt:    food.UpdatedAt,
+		Type:         food.Type.String,
+		IntakeStatus: food.IntakeStatus.String,
+		Feeder:       food.Feeder.String,
+		Location:     food.Location.String,
+		Remarks:      food.Remarks.String,
+		CreatedAt:    food.CreatedAt.Time,
+		UpdatedAt:    food.UpdatedAt.Time,
 	}, nil
 }

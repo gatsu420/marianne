@@ -32,13 +32,13 @@ func (m *mockUsecase) GetFood(ctx context.Context, id int) (*food.GetFoodRow, er
 	return &food.GetFoodRow{
 		ID:           99,
 		Name:         "mock",
-		Type:         tests.MockPGText(),
-		IntakeStatus: tests.MockPGText(),
-		Feeder:       tests.MockPGText(),
-		Location:     tests.MockPGText(),
-		Remarks:      tests.MockPGText(),
-		CreatedAt:    tests.MockPGTimestamptz(),
-		UpdatedAt:    tests.MockPGTimestamptz(),
+		Type:         tests.MockPGText().String,
+		IntakeStatus: tests.MockPGText().String,
+		Feeder:       tests.MockPGText().String,
+		Location:     tests.MockPGText().String,
+		Remarks:      tests.MockPGText().String,
+		CreatedAt:    tests.MockPGTimestamptz().Time,
+		UpdatedAt:    tests.MockPGTimestamptz().Time,
 	}, nil
 }
 
