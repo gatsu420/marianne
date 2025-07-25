@@ -18,13 +18,13 @@ func Test_GetFood(t *testing.T) {
 	mockRow, err := json.Marshal(&food.GetFoodRow{
 		ID:           99,
 		Name:         "mock",
-		Type:         tests.MockPGText(),
-		IntakeStatus: tests.MockPGText(),
-		Feeder:       tests.MockPGText(),
-		Location:     tests.MockPGText(),
-		Remarks:      tests.MockPGText(),
-		CreatedAt:    tests.MockPGTimestamptz(),
-		UpdatedAt:    tests.MockPGTimestamptz(),
+		Type:         tests.MockPGText().String,
+		IntakeStatus: tests.MockPGText().String,
+		Feeder:       tests.MockPGText().String,
+		Location:     tests.MockPGText().String,
+		Remarks:      tests.MockPGText().String,
+		CreatedAt:    tests.MockPGTimestamptz().Time,
+		UpdatedAt:    tests.MockPGTimestamptz().Time,
 	})
 	if err != nil {
 		t.Errorf("failed to serialize: %v", err)
