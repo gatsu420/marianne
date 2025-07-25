@@ -9,6 +9,7 @@ import (
 type PGRepo interface {
 	GetFood(ctx context.Context, id int) (GetFoodRow, error)
 	ListFood(ctx context.Context, args ListFoodArgs) ([]ListFoodRow, error)
+	CreateFood(ctx context.Context, args CreateFoodArgs) error
 }
 
 type pgRepoImpl struct {
