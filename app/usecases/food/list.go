@@ -9,6 +9,15 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type ListFoodArgs struct {
+	StartTimestamp time.Time
+	EndTimestamp   time.Time
+	Type           string
+	IntakeStatus   string
+	Feeder         string
+	Location       string
+}
+
 type ListFoodRow struct {
 	ID           int       `json:"id"`
 	Name         string    `json:"name"`
@@ -19,15 +28,6 @@ type ListFoodRow struct {
 	Remarks      string    `json:"remarks"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
-}
-
-type ListFoodArgs struct {
-	StartTimestamp time.Time
-	EndTimestamp   time.Time
-	Type           string
-	IntakeStatus   string
-	Feeder         string
-	Location       string
 }
 
 func (u *usecaseImpl) ListFood(ctx context.Context, args *ListFoodArgs) ([]ListFoodRow, error) {
