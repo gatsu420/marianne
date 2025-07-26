@@ -192,3 +192,52 @@ func Test_ListFood(t *testing.T) {
 		})
 	}
 }
+
+// func Test_CreateFood(t *testing.T) {
+// 	// mockRequestBody, err := json.Marshal(&food.CreateFoodArgs{
+// 	// 	Name:           "mock",
+// 	// 	TypeID:         99,
+// 	// 	IntakeStatusID: 99,
+// 	// 	FeederID:       99,
+// 	// 	LocationID:     99,
+// 	// 	Remarks:        "mock",
+// 	// })
+// 	// if err != nil {
+// 	// 	t.Errorf("failed to serialize: %v", err)
+// 	// }
+
+// 	testCases := []struct {
+// 		caseName           string
+// 		usecaseErr         error
+// 		w                  http.ResponseWriter
+// 		r                  *http.Request
+// 		expectedStatusCode int
+// 		expectedRespBody   string
+// 	}{
+// 		{
+// 			caseName:   "unable to get rows from usecase",
+// 			usecaseErr: commonerr.New(commonerr.ErrMsgInternal, commonerr.ErrInternal),
+// 			w:          httptest.NewRecorder(),
+// 			r: httptest.NewRequest(http.MethodPost,
+// 				"http://localhost:8080/v1/food/",
+// 				nil,
+// 			),
+// 			expectedStatusCode: http.StatusInternalServerError,
+// 			expectedRespBody:   commonerr.ErrMsgInternal,
+// 		},
+// 	}
+
+// 	for _, tc := range testCases {
+// 		t.Run(tc.caseName, func(t *testing.T) {
+// 			mockUsecase := mockusecases.NewMockUsecase(
+// 				mockusecases.WithExpectedErr(tc.usecaseErr),
+// 			)
+// 			handler := handlers.NewHandler(mockUsecase)
+
+// 			handler.CreateFood(tc.w, tc.r)
+// 			resp := tc.w.(*httptest.ResponseRecorder)
+// 			tests.AssertEqual(t, resp.Code, tc.expectedStatusCode)
+// 			tests.AssertEqual(t, strings.TrimSuffix(resp.Body.String(), "\n"), tc.expectedRespBody)
+// 		})
+// 	}
+// }

@@ -145,3 +145,31 @@ and (
 	}
 	return result, nil
 }
+
+type CreateFoodArgs struct {
+	Name           string
+	TypeID         int
+	IntakeStatusID int
+	FeederID       int
+	LocationID     int
+	Remarks        pgtype.Text
+}
+
+func (p *pgRepoImpl) CreateFood(ctx context.Context, args CreateFoodArgs) error {
+	query := `
+insert into food (
+	name, type_id, intake_status_id, feeder_id, location_id, remarks
+) values (
+	$1, $2, $3, $4, $5, $6
+)
+	`
+	_, err := p.pgxPool.Exec(ctx, query,
+		args.Name,
+		args.TypeID,
+		args.IntakeStatusID,
+		args.FeederID,
+		args.LocationID,
+		args.Remarks,
+	)
+	return err
+}

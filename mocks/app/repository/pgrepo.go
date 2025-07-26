@@ -60,3 +60,10 @@ func (m *mockPGRepo) ListFood(ctx context.Context, args repository.ListFoodArgs)
 		},
 	}, nil
 }
+
+func (m *mockPGRepo) CreateFood(ctx context.Context, args repository.CreateFoodArgs) error {
+	if m.expectedErr != nil {
+		return m.expectedErr
+	}
+	return nil
+}
