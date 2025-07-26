@@ -28,6 +28,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /v1/food", handlers.GetFood)
 	mux.HandleFunc("GET /v1/foodlist", handlers.ListFood)
+	mux.HandleFunc("POST /v1/food", handlers.CreateFood)
 
 	server := http.Server{
 		Addr:    ":8080",

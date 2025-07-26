@@ -4,6 +4,9 @@ const (
 	ErrInternal    = "base.internal"
 	ErrMsgInternal = "something went wrong"
 
+	ErrBadRequest    = "base.bad_request"
+	ErrMsgBadRequest = "arguments in request body must be properly supplied"
+
 	ErrFoodNotFound    = "food.food_not_found"
 	ErrMsgFoodNotFound = "food is not found"
 )

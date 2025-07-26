@@ -9,6 +9,7 @@ import (
 type Handler interface {
 	GetFood(w http.ResponseWriter, r *http.Request)
 	ListFood(w http.ResponseWriter, r *http.Request)
+	CreateFood(w http.ResponseWriter, r *http.Request)
 }
 
 type handlerImpl struct {

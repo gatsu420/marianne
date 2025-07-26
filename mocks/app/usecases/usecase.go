@@ -60,3 +60,10 @@ func (m *mockUsecase) ListFood(ctx context.Context, args *food.ListFoodArgs) ([]
 		},
 	}, nil
 }
+
+func (m *mockUsecase) CreateFood(ctx context.Context, args *food.CreateFoodArgs) error {
+	if m.expectedErr != nil {
+		return m.expectedErr
+	}
+	return nil
+}

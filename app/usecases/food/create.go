@@ -18,6 +18,14 @@ type CreateFoodArgs struct {
 }
 
 func (u *usecaseImpl) CreateFood(ctx context.Context, args *CreateFoodArgs) error {
+	if args.Name == "" ||
+		args.TypeID == 0 ||
+		args.IntakeStatusID == 0 ||
+		args.FeederID == 0 ||
+		args.LocationID == 0 {
+		return commonerr.New(commonerr.ErrMsgBadRequest, commonerr.ErrBadRequest)
+	}
+
 	err := u.pgRepo.CreateFood(ctx, repository.CreateFoodArgs{
 		Name:           args.Name,
 		TypeID:         args.TypeID,
